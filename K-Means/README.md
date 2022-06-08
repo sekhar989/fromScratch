@@ -39,7 +39,11 @@ np.random.seed(seed)
 max_data_points = 500
 num_clusters = 5
 num_features = 2
-features, labels = make_blobs(n_samples=max_data_points, n_features=num_features, centers=num_clusters, cluster_std=1, random_state=seed)
+features, labels = make_blobs(n_samples=max_data_points,
+                              n_features=num_features,
+                              centers=num_clusters,
+                              cluster_std=1,
+                              random_state=seed)
 ```
 
 
