@@ -3,7 +3,7 @@
 The goal of this repository is to explore fundamental ML algorithms and gain an in-depth understanding about the inner mechanism, by building them from scratch.
 A list of algorithms which are explored here are listed below:
 
-- [Decision Stumps]()
+- [Decision Stumps](https://github.com/sekhar989/fromScratch/tree/main/Decision%20Stump%20-%20Boosting)
 - [K-Means Clustering]()
 - [Linear Regression]()
 - [Logistic Regression]()
