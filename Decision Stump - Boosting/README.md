@@ -7,9 +7,6 @@
 - A new data-point $X_k$ is classified (predicted) by the modal (mean) value of the region it belongs to.
 - The splitting rules can be summarised or presented very efficiently in a tree like data structure, which is not showcased here.
 
-### Boosting
-
-
 
 Here the `Boston` dataset is used, off which only two variables are selected as features. This is because the algorithm is quite time consuming if not programmed efficiently. The below algorithm is to build a decision stump i.e. a decision tree with only one split.
 
@@ -416,16 +413,12 @@ boosted_tree_num = 1000
 boosted = boosted_stump(features=X_train, labels=Y_train, lr=learning_rate, boosted_num=boosted_tree_num)
 ```
 
-    Fitting Boosted Tree: 100%|########################################################################################################################################################| 1000/1000 [19:18<00:00,  1.16s/it]
+    Fitting Boosted Tree: 100%|###############################################################| 1000/1000 [19:18<00:00,  1.16s/it]
 
 
 
 ```python
 boosted_df = pd.DataFrame(boosted)
-```
-
-
-```python
 boosted_df.head()
 ```
 
