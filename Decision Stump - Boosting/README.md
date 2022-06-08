@@ -1,4 +1,4 @@
-# The Algorithm - Regression Trees
+# Boosted Decision Stump
 
 ## Problem Setup
 
@@ -13,13 +13,15 @@ Here the `Boston` dataset is used, off which only two variables are selected as 
 ### Init Stump Variables
 
 - Split Variable $\rightarrow$ Where the variable on which the split is made will be stored
-- RSS Value $\rightarrow$ The RSS value of the split
+- RSS Value $\rightarrow$ The RSS (Residual Sum of Squares) value of the split
 - Split Threshold $\rightarrow$ The threshold against which the split is made
 - MSE $\rightarrow$ Meean Squared Error of the split
 - Predictions $\rightarrow$ Prediction value for each region
 
 $$RSS = \sum_{j = 1}^J \sum_{i \in R_j} (y_i - y_{R_j})^2$$  
 $$MSE = \frac{1}{n} RSS$$
+
+## The Algorithm - Regression Trees
 
 - Iterate over all feature variables
     - Calculate the `min` and `max` value of each feature
