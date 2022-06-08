@@ -11,4 +11,4 @@ A list of algorithms which are explored here are listed below:
 
 The list will be increasing with time..
 
-*Note: All the algorithms are coded using Python programming language. I plan to implement the same using other programming languages of interset (e.g. C++, Rust or Node), which will serve as a process of grasping the programming language. The codes will be written keeping the algorithm efficiency i.e.* $Big(O)$ *, in mind but is not recommended to use them in production system. It is purely for learning and understanding purpose.*
+> *Note: All the algorithms are coded using Python programming language. The codes will be written without keeping the efficiency, in mind because the primary goal i.e. understanding. It is not recommended to use the code in production systems. It is purely for learning and understanding purpose.*

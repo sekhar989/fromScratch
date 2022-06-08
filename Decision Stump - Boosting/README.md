@@ -1,6 +1,17 @@
 # The Algorithm - Regression Trees
-- Assuming all feature values are quantitative.  
-- The below algorithm is to build a decision stump i.e. a decision tree with only one split.
+
+## Problem Setup
+
+### Decision Tree
+- Given an object space $X_i \in {X_1, X_2, \dots, X_n}$, the objective is to divide them into different regions $(R_j)$
+- A new data-point $X_k$ is classified (predicted) by the modal (mean) value of the region it belongs to.
+- The splitting rules can be summarised or presented very efficiently in a tree like data structure, which is not showcased here.
+
+### Boosting
+
+
+
+Here the `Boston` dataset is used, off which only two variables are selected as features. This is because the algorithm is quite time consuming if not programmed efficiently. The below algorithm is to build a decision stump i.e. a decision tree with only one split.
 
 ### Init Stump Variables
 
@@ -181,6 +192,7 @@ data.head()
 
 ## Building a Decision Stump
 
+- Decision Stump is a decision tree with only one split. A simple model with a very high **Bias**.
 
 ```python
 def decision_stump(features, labels, num_thresholds=200):
@@ -289,6 +301,18 @@ print(f"Test MSE: {test_mse:>5.4f}")
 ## Boosted Stump
 
 We have a decision stump and we can perform predictions using it. But as we can see that MSE value is quite large. This can be minimized by using a Boosted Tree.  
+
+The primary goal of Boosting is to take a model with very high bias and slowly increase it's complexity (variance) by fitting the same model but the target variable is the residuals. The mathematical calculations are shown below:
+
+$$
+\begin{align}
+r_i & = Y_i & \dots\text{Initial Residuals} \\
+r'_i & = r_i - \hat{f}(X_i) * \eta & \dots \text{$\hat{f}$ = decision stump} \\
+\hat{f_b}(X) & = \sum_{b = 1}^{B} \eta \hat{f_b}(x) = \eta * \sum_{b = 1}^{B} \hat{f_b}(x) & \dots \text{Final Prediction using all the decision stumps fitted to the residuals} \\
+&& \text{As $\eta$ is constant we can pull it out, compute the sum and then perform the product.}
+\end{align}
+$$
+
 Some popular implementations available are Adaboost and XGBoost.  
 
 Things required to build a boosted tree:
@@ -298,17 +322,10 @@ Things required to build a boosted tree:
 - Number of Boosted Trees $(B)$
 
 <span style="color:red;font-weight:500;font-size:20px">
-    🚨Crucial $\rightarrow$ Residual Calculations.
+    🚨Crucial: Residual Calculations.
     It should be noted that we are trying to fit the residuals.
     <p>This will be again used during predictions.</p>
 </span>
-
-$\begin{align}
-r_i & = Y_i & \dots\text{Initial Residuals} \\
-r'_i & = r_i - \hat{f}(X_i) * \eta & \dots \text{$\hat{f}$ = decision stump} \\
-\hat{f_b}(X) & = \sum_{b = 1}^{B} \eta \hat{f_b}(x) = \eta * \sum_{b = 1}^{B} \hat{f_b}(x) & \dots \text{Final Prediction using all the decision stumps fitted to the residuals} \\
-&& \text{As $\eta$ is constant we can pull it out, compute the sum and then perform the product.}
-\end{align}$
 
 
 ```python
@@ -399,7 +416,7 @@ boosted_tree_num = 1000
 boosted = boosted_stump(features=X_train, labels=Y_train, lr=learning_rate, boosted_num=boosted_tree_num)
 ```
 
-    Fitting Boosted Tree: 100%|##########################################################################################################################################################| 100/100 [01:46<00:00,  1.07s/it]
+    Fitting Boosted Tree: 100%|########################################################################################################################################################| 1000/1000 [19:18<00:00,  1.16s/it]
 
 
 
@@ -529,21 +546,31 @@ for max_idx in range(boosted_tree_num):
 
 
 ```python
-plt.figure(figsize=(12, 8))
+zipped = zip(iter(np.array(test_mse) > boosted_df['training_mse'].values), range(len(test_mse)))
+
+for condition, idx in zipped:
+    if condition:
+        first_idx = idx
+        break
+```
+
+
+```python
+plt.figure(figsize=(20, 12))
 plt.plot(boosted_df['training_mse'], label='Training MSE');
 plt.plot(test_mse, label='Test MSE');
 plt.ylabel('MSE');
-plt.xlabel('Number of Trees');
+plt.xlabel(f'Number of Trees {boosted_tree_num}');
+plt.plot(first_idx, test_mse[first_idx], marker='X', color='r', markersize=20)
 plt.legend();
 ```
 
 
     
-![png](img/output_27_0.png)
+![png](img/output_28_0.png)
     
 
 
+From the above plots it is evident that Boosted Trees have a high bias when the number of trees is small, but with gradual increase of the number of trees that fits the residuals we are increasing the model complexity i.e. variance.
 
-```python
-
-```
+The boosted trees do over-fit the training data, indicated by the red-cross where the `TEST MSE` crosses the `TRAIN MSE`, but that happens at a very slow ratee, that too by a very small margin.
